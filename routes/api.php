@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('schools','SchoolController@index');
+Route::get('detail/{id}','SchoolController@show');
+Route::post('newSchool','SchoolController@store');
+Route::put('update/{id}','SchoolController@update');
+Route::delete('delete/{id}','SchoolController@destroy');
+
