@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'api', 'prefix' => 'admin'], function () {
     Route::post('/login', 'AdminAuthController@login');
     Route::post('/register', 'AdminAuthController@register');
+    Route::post('/profile', 'AdminAuthController@profile');
 
 });
 
@@ -33,3 +34,4 @@ Route::group(['middleware' => 'api', 'prefix' => 'student'], function () {
 });
 
 Route::post('/admin/logout', 'AdminAuthController@logout');
+Route::post('/student/logout', 'AdminAuthController@logout');

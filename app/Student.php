@@ -53,4 +53,11 @@ class Student extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function setPasswordAttribute($password)
+    {
+        if (!empty($password)) {
+            $this->attributes['password'] = bcrypt($password);
+        }
+    }
 }

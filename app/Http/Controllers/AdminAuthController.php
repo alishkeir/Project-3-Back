@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Admin;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AdminRegisterRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,15 +25,20 @@ class AdminAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request)
+    public function register(AdminRegisterRequest $request)
     {
-        $admin = Admin::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'school_id' => $request->school_id,
 
-        ]);
+        $admin = $request->all();
+        Admin::create($admin);
+
+        // $admin = Admin::create([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => bcrypt($request->password),
+        //     'school_id' => $request->school_id,
+
+        // ]);
+
         return response()->json([
             'message' => 'Successfully registered',
             'admin' => $admin,
@@ -64,10 +70,10 @@ class AdminAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    // public function profile()
-    // {
-    //     return response()->json(auth("api")->user());
-    // }
+    public function profile()
+    {
+        return response()->json(auth()->user());
+    }
 
     /**
      * Log the user out (Invalidate the token).

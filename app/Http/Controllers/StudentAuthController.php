@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Student\StudentRegisterRequest;
 use App\Student;
 use Illuminate\Http\Request;
-// use Validator;
 use Illuminate\Support\Facades\Auth;
 
 class StudentAuthController extends Controller
@@ -25,25 +25,22 @@ class StudentAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request)
+    public function register(StudentRegisterRequest $request)
     {
-        $student = Student::create([
-            'email' => $request->email,
-            'password' => $request->password,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'phone_number' => $request->phone_number,
-            'whatsapp_number' => $request->whatsapp_number,
-            'nationality' => $request->nationality,
-            'status' => $request->status,
-            'school_id' => $request->school_id,
-            'image' => $request->image,
 
-        ]);
+        $student = $request->all();
+        Student::create($student);
+
+    
+
         return response()->json([
             'message' => 'Successfully registered',
             'student' => $student,
         ], 201);
+
+        // $token = auth()->login($admin);
+
+        // return $this->respondWithToken($token);
     }
 
     /**
@@ -51,18 +48,11 @@ class StudentAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request)
+    public function login()
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string',
-            'password' => 'required|string|min:3',
-        ]);
+        $login = request(["email", "password"]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        if (!$token = auth()->attempt($validator->validated())) {
+        if (!$token = auth("student")->attempt($login)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -86,7 +76,7 @@ class StudentAuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        auth("api")->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
@@ -96,10 +86,10 @@ class StudentAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
-    {
-        return $this->createNewToken(auth()->refresh());
-    }
+    // public function refresh()
+    // {
+    //     return $this->createNewToken(auth()->refresh());
+    // }
 
     /**
      * Get the token array structure.
@@ -113,7 +103,7 @@ class StudentAuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            // 'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
 }
