@@ -3,9 +3,13 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Exception;
+use JWTAuth;
+use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
-class AssignGuard
+class JwtMiddleware extends BaseMiddleware
 {
+
     /**
      * Handle an incoming request.
      *
@@ -13,12 +17,19 @@ class AssignGuard
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next)
     {
-        if ($guard != null) {
-            auth()->shouldUse($guard);
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+        } catch (Exception $e) {
+            if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+                return response()->json(['status' => 'Token is Invalid']);
+            } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+                return response()->json(['status' => 'Token is Expired']);
+            } else {
+                return response()->json(['status' => 'Authorization Token not found']);
+            }
         }
-
         return $next($request);
     }
 }

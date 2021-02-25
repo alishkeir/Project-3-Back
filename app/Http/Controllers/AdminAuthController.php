@@ -6,7 +6,6 @@ use App\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Validator;
 
 class AdminAuthController extends Controller
 {
@@ -15,10 +14,10 @@ class AdminAuthController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    // }
 
     /**
      * Register a User.
@@ -30,7 +29,7 @@ class AdminAuthController extends Controller
         $admin = Admin::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => bcrypt($request->password),
             'school_id' => $request->school_id,
 
         ]);
@@ -49,18 +48,11 @@ class AdminAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request)
+    public function login()
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string',
-            'password' => 'required|string|min:3',
-        ]);
+        $login = request(["email", "password"]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        if (!$token = auth()->attempt($validator->validated())) {
+        if (!$token = auth("admin")->attempt($login)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -72,10 +64,10 @@ class AdminAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function profile()
-    {
-        return response()->json(auth()->user());
-    }
+    // public function profile()
+    // {
+    //     return response()->json(auth("api")->user());
+    // }
 
     /**
      * Log the user out (Invalidate the token).
@@ -84,7 +76,7 @@ class AdminAuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        auth("api")->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
@@ -94,10 +86,10 @@ class AdminAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
-    {
-        return $this->createNewToken(auth()->refresh());
-    }
+    // public function refresh()
+    // {
+    //     return $this->createNewToken(auth()->refresh());
+    // }
 
     /**
      * Get the token array structure.
@@ -111,7 +103,7 @@ class AdminAuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            // 'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
 }

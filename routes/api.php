@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/admin', function (Request $request) {
+//     return $request->admin();
+// });
+
+// Route::middleware('auth:api')->get('/student', function (Request $request) {
+//     return $request->student();
+// });
 
 Route::group(['middleware' => 'api', 'prefix' => 'admin'], function () {
     Route::post('/login', 'AdminAuthController@login');
@@ -25,9 +28,8 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function () {
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'student'], function () {
-  // Route::get('/demo', 'UserController@demo');
     Route::post('/login', 'StudentAuthController@login');
     Route::post('/register', 'StudentAuthController@register');
 });
-// Route::post('admin/login', 'AdminAuthController@login');
-// Route::post('admin/register', 'AdminAuthController@register');
+
+Route::post('/admin/logout', 'AdminAuthController@logout');
