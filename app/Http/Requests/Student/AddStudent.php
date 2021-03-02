@@ -32,7 +32,7 @@ class AddStudent extends FormRequest
             'phone_number' => 'required|min:5|max:20',
             'whatsapp_number' => 'required|min:5|max:20',
             'nationality' => 'required',
-            'image' => 'bail|required|mimes:jpeg,png,jpg,gif,svg|max:10240',
+            'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'status' => 'required',
         ];
     }
