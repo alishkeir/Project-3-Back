@@ -29,6 +29,16 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function () {
 
 });
 
+
+
+Route::resource('questions','questionController');
+Route::resource('schools','SchoolController');
+
+
+
+
+
+
 Route::group(['middleware' => 'api', 'prefix' => 'student'], function () {
     Route::post('/login', 'StudentAuthController@login');
     Route::post('/register', 'StudentAuthController@register');
