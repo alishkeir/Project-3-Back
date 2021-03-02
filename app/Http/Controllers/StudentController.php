@@ -17,16 +17,21 @@ class StudentController extends Controller
     public function __construct()
     {
         $this->user = JWTAuth::parseToken()->authenticate();
+
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Student::paginate(10);
-
+        $data = $request->all();
+        if ($data['school'] == "all") {
+            return Student::paginate(5);
+        } else {
+            return Student::where("school", $data["school"]);
+        }
     }
 
     /**
