@@ -21,6 +21,10 @@ class CreateAdminsTable extends Migration
             $table->unsignedBigInteger('school_id');
             $table->foreign('school_id')->references('id')->on('schools');
             $table->timestamps();
+            $table->rememberToken();
+            $table->timestamp('email_verified_at')->nullable();
+
+
         });
     }
 
