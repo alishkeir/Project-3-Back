@@ -30,7 +30,7 @@ class UpdateStudent extends FormRequest
             'password' => 'string|bail|min:6',
             'phone_number' => 'min:5|max:20',
             'whatsapp_number' => 'min:5|max:20',
-            'image' => 'bail|mimes:jpeg,png,jpg,gif,svg|max:10240',
+            'image' => 'bail|mimes:jpeg,png,jpg,gif,svg',
         ];
     }
 
@@ -54,7 +54,7 @@ class UpdateStudent extends FormRequest
             'whatsapp_number.max' => 'Whatsapp Number must be less than 20 numbers',
 
             'image.mimes' => 'Image should be of type jpeg, png, jpg, gif or svg',
-            'image.max' => 'Image size should be 10MB or less',
+            // 'image.max' => 'Image size should be 10MB or less',
 
         ];
     }

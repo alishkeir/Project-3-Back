@@ -25,8 +25,9 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function () {
     Route::post('/login', 'AdminAuthController@login');
     Route::post('/register', 'AdminAuthController@register');
     Route::post('/profile', 'AdminAuthController@profile');
-Route::resource('/students', 'StudentController');
+    Route::post('/logout', 'AdminAuthController@logout');
 
+    Route::resource('/students', 'StudentController');
 
 });
 
@@ -43,7 +44,6 @@ Route::resource('schools','SchoolController');
 Route::group(['middleware' => 'api', 'prefix' => 'student'], function () {
     Route::post('/login', 'StudentAuthController@login');
     Route::post('/register', 'StudentAuthController@register');
-});
+    Route::post('/logout', 'StudentAuthController@logout');
 
-Route::post('/admin/logout', 'AdminAuthController@logout');
-Route::post('/student/logout', 'AdminAuthController@logout');
+});

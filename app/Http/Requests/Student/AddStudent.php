@@ -32,7 +32,7 @@ class AddStudent extends FormRequest
             'phone_number' => 'required|min:5|max:20',
             'whatsapp_number' => 'required|min:5|max:20',
             'nationality' => 'required',
-            'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:10240',
+            'image' => 'bail|required|mimes:jpeg,png,jpg,gif,svg',
             'status' => 'required',
         ];
     }
@@ -68,7 +68,7 @@ class AddStudent extends FormRequest
 
             'image.required' => 'Image is Required',
             'image.mimes' => 'Image should be of type jpeg, png, jpg, gif or svg',
-            'image.max' => 'Image size should be 10MB or less',
+            // 'image.max' => 'Image size should be 10MB or less',
 
         ];
     }
