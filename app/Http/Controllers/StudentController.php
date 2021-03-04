@@ -12,11 +12,11 @@ use JWTAuth;
 class StudentController extends Controller
 {
 
-    protected $user;
+    protected $student;
 
     public function __construct()
     {
-        $this->user = JWTAuth::parseToken()->authenticate();
+        // $this->student = JWTAuth::parseToken()->authenticate();
 
     }
     /**
@@ -27,13 +27,42 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $data = $request->all();
-        if ($data['school'] == "all") {
-            return Student::paginate(5);
-        } else {
-            return Student::where("school", $data["school"]);
+        // if ($data['school'] == "all") {
+        //     return Student::paginate(5);
+        // } else {
+        //     return Student::where("school", $data["school"]);
+        // }
+        $students_info = [];
+        $students = Student::all();
+        foreach ($students as $student) {
+         
+            $student_info = [];
+            $student_info["id"] = $student->id;
+            $student_info["first_name"] = $student->first_name;
+            $student_info["last_name"] = $student->last_name;
+            $student_info["email"] = $student->email;
+            $student_info["password"] = $student->password;
+            $student_info["phone_number"] = $student->last_name;
+            $student_info["whatsapp_number"] = $student->last_name;
+            $student_info["nationality"] = $student->nationality;
+            $student_info["image"] = $student->image;
+            $student_info["status"] = $student->status;
+            $student_info['school_id'] = $student->school_id;
+            array_push($students_info, $student_info);
         }
+        return response()->json([
+            'status' => 200,
+            'message' => $students_info,
+        ], 200);
     }
-
+    // public function getStudentById ($id) {
+    //     $student = Students::where('id', $id)->first();
+    //     console.log($student);
+    //     return response()->json([
+    //         'status' => 200,
+    //         'message' => $student,
+    //     ], 200);
+    // }
     /**
      * Show the form for creating a new resource.
      *
@@ -52,8 +81,8 @@ class StudentController extends Controller
         $request->validated();
         $student = new Student();
         $image = $request->file('image');
-        $name = time() . '_' . $image->getClientOriginalName();
-        $path = $request->file('image')->storeAs('/Student', $name, 'public');
+        $first_name = time() . '_' . $image->getClientOriginalfirst_name();
+        $path = $request->file('image')->storeAs('/Student', $first_name, 'public');
         $student->fill($data);
         if ($path) {
             $student->save();
@@ -73,7 +102,11 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        return Student::where("id", $id)->first();
+        $student=Student::where("id", $id)->first();
+        return response()->json([
+            'status' => 200,
+            'message' => $student,
+        ], 200);
 
     }
 
@@ -97,16 +130,16 @@ class StudentController extends Controller
         $student = Student::where("id", $id)->first();
         $image = $request->file('image');
         if ($image) {
-            $name = time() . '_' . $image->getClientOriginalName();
-            $path = $request->file('image')->storeAs('/Student', $name, 'public');
+            $first_name = time() . '_' . $image->getClientOriginalfirst_name();
+            $path = $request->file('image')->storeAs('/Student', $first_name, 'public');
         }
         $student->update($data);
 
-        if ($request->first_name) {
-            $student->first_name = $data['first_name'];
+        if ($request->first_first_name) {
+            $student->first_first_name = $data['first_first_name'];
         }
-        if ($request->last_name) {
-            $student->last_name = $data['last_name'];
+        if ($request->last_first_name) {
+            $student->last_first_name = $data['last_first_name'];
         }
         if ($request->email) {
             $student->email = $data['email'];
