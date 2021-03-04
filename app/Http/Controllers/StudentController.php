@@ -7,18 +7,17 @@ use App\Http\Requests\Student\UpdateStudent;
 use App\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use JWTAuth;
 
 class StudentController extends Controller
 {
 
-    protected $user;
+    // protected $user;
 
-    public function __construct()
-    {
-        $this->user = JWTAuth::parseToken()->authenticate();
+    // public function __construct()
+    // {
+    //     $this->user = JWTAuth::parseToken()->authenticate();
 
-    }
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -54,8 +53,11 @@ class StudentController extends Controller
         $image = $request->file('image');
         $name = time() . '_' . $image->getClientOriginalName();
         $path = $request->file('image')->storeAs('/Student', $name, 'public');
-        $student->fill($data);
-        if ($path) {
+        // return $path;
+        $data['image'] = $name;
+
+        if ($name) {
+            $student->fill($data);
             $student->save();
             return response()->json(['status' => 200, 'student' => $student]);
 
@@ -99,6 +101,8 @@ class StudentController extends Controller
         if ($image) {
             $name = time() . '_' . $image->getClientOriginalName();
             $path = $request->file('image')->storeAs('/Student', $name, 'public');
+            $data['image'] = $name;
+
         }
         $student->update($data);
 
@@ -124,8 +128,8 @@ class StudentController extends Controller
             $student->whatsapp_number = $data['whatsapp_number'];
         }
         if ($request->image) {
-            if ($path) {
-                $student->image = $path;
+            if ($name) {
+                $student->image = $name;
             }
         }
 

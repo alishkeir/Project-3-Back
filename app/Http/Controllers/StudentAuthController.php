@@ -28,15 +28,29 @@ class StudentAuthController extends Controller
     public function register(StudentRegisterRequest $request)
     {
 
-        $student = $request->all();
-        Student::create($student);
+        // $student = $request->all();
 
-    
+        // Student::create($student);
 
-        return response()->json([
-            'message' => 'Successfully registered',
-            'student' => $student,
-        ], 201);
+        $data = $request->all();
+        $request->validated();
+        $student = new Student();
+        $image = $request->file('image');
+        $name = time() . '_' . $image->getClientOriginalName();
+        $path = $request->file('image')->storeAs('/SStudent', $name, 'public');
+        $data['image'] = $name; 
+        $student->fill($data);
+
+        if ($name) {
+            $student->save();
+            return response()->json([
+                'message' => 'Successfully registered',
+                'student' => $student,
+            ], 201);
+        } else {
+            return response()->json(['staus' => 500, 'error' => "couldnt upload image"]);
+
+        }
 
         // $token = auth()->login($admin);
 
