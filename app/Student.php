@@ -18,10 +18,15 @@ class Student extends Authenticatable implements JWTSubject
      */
     protected $table = "students";
 
-
     protected $fillable = [
         'email', 'password', 'first_name', 'last_name', 'phone_number', 'whatsapp_number', 'nationality', 'image', 'status', 'school_id',
     ];
+
+    public function school()
+    {
+
+        return $this->belongsTo(School::class, 'school_id', 'id');
+    }
 
     /**
      * The attributes that should be hidden for arrays.

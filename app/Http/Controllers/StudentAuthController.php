@@ -15,10 +15,10 @@ class StudentAuthController extends Controller
      *
      * @return void
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    // }
+    public function __construct()
+    {
+        $this->middleware('auth:student', ['except' => ['login', 'register']]);
+    }
 
     /**
      * Register a User.

@@ -18,6 +18,11 @@ class StudentController extends Controller
     //     $this->user = JWTAuth::parseToken()->authenticate();
 
     // }
+
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api');
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +32,7 @@ class StudentController extends Controller
     {
         $data = $request->all();
         if ($data['school'] == "all") {
-            return Student::paginate(5);
+            return Student::with("school")->paginate(5);
         } else {
             return Student::where("school", $data["school"]);
         }

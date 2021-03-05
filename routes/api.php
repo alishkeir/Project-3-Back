@@ -26,7 +26,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function () {
     Route::post('/register', 'AdminAuthController@register');
     Route::post('/profile', 'AdminAuthController@profile');
     Route::post('/logout', 'AdminAuthController@logout');
-
     Route::resource('/students', 'StudentController');
 
 });

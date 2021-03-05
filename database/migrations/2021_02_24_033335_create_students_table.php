@@ -29,6 +29,7 @@ class CreateStudentsTable extends Migration
             $table->foreign('school_id')->references('id')->on('schools');
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string("pending");
 
         });
     }
